@@ -528,7 +528,7 @@ class ProcessoDocumento
         $oDaoProtprocessodocumento->p01_data = date('Y-m-d');
         $oDaoProtprocessodocumento->p01_usuario = $this->getUsuario()->getIdUsuario();
         $oDaoProtprocessodocumento->p01_procandamint = $this->getProcandamint();
-        $oDaoProtprocessodocumento->p01_estorage = $this->storage ? "true" : "false";
+        $oDaoProtprocessodocumento->p01_estorage = $this->isStorage();
         $oDaoProtprocessodocumento->p01_ordem = $this->getOrdem();
         $oDaoProtprocessodocumento->p01_assinado = $this->getAssinado();
         $oDaoProtprocessodocumento->p01_assinado_por = $this->getAssinadoPor();
