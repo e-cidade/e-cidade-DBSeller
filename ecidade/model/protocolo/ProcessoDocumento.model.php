@@ -680,7 +680,13 @@ class ProcessoDocumento
      */
     public function isStorage()
     {
-        return $this->storage == 't' || $this->storage == 'true' || $this->storage == true;
+        // PostgreSQL booleans may reach legacy PHP as the strings 't' or 'f'.
+        // A loose comparison of nonempty 'f' with true would misroute documents
+        // to E-Storage and skip removal of their Large Object reference.
+        if (is_string($this->storage)) {
+            return in_array(strtolower(trim($this->storage)), array('t', 'true', '1'), true);
+        }
+        return $this->storage === true || $this->storage === 1;
     }
 
     public static function getLastOrdemProcesso($processo)
