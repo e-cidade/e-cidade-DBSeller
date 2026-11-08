@@ -1,0 +1,31 @@
+# SPDX-FileCopyrightText: 2026 LibreCode coop and contributors
+# SPDX-License-Identifier: AGPL-3.0-or-later
+name: Nextcloud Integrator compatibility
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: nextcloud-compat-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  native:
+    name: PHP 5.6 original DAO and SPI
+    uses: e-cidade/nextcloud-integrator/.github/workflows/fork-source-runtime.yml@main
+    with:
+      dbseller_sha: ${{ github.event.pull_request.head.sha || github.sha }}
+      dbseller_pr: ${{ github.event.pull_request.number && format('{0}', github.event.pull_request.number) || '' }}
+
+  https:
+    name: PostgreSQL and Nextcloud HTTPS
+    uses: e-cidade/nextcloud-integrator/.github/workflows/nextcloud-http-contract.yml@main
+    with:
+      dbseller_sha: ${{ github.event.pull_request.head.sha || github.sha }}
+      dbseller_pr: ${{ github.event.pull_request.number && format('{0}', github.event.pull_request.number) || '' }}
