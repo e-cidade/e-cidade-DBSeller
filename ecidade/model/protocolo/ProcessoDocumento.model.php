@@ -91,7 +91,7 @@ class ProcessoDocumento
     private $iLimiteTamanho = 31457280;
 
     /**
-     * Extensões não permitidas para os documentos
+     * ExtensÃµes nÃ£o permitidas para os documentos
      *
      * @var array
      * @access private
@@ -134,7 +134,7 @@ class ProcessoDocumento
 
 
     /**
-     * Campo que determina se o arquivo foi ou será salvo na nuvem
+     * Campo que determina se o arquivo foi ou serÃ¡ salvo na nuvem
      * @var boolean
      */
     private $storage = false;
@@ -385,7 +385,7 @@ class ProcessoDocumento
     }
 
     /**
-     * Retorna se o documento está ou não no estorage
+     * Retorna se o documento estÃ¡ ou nÃ£o no estorage
      * @access public
      * @return integer
      */
@@ -423,7 +423,7 @@ class ProcessoDocumento
     /**
      * Validar arquivo
      * - tamanho limite
-     * - extensão
+     * - extensÃ£o
      *
      * @access public
      * @return boolean
@@ -514,7 +514,7 @@ class ProcessoDocumento
             throw new Exception(_M(URL_MENSAGEM_PROCESSO_DOCUMENTO . 'erro_processo_nao_informado'));
         }
 
-        if (!$this->storage) {
+        if (!$this->isStorage()) {
             $this->iOid = $this->salvarArquivoBanco();
             $this->sNomeDocumento = basename($this->sCaminhoArquivo);
         }
@@ -528,7 +528,7 @@ class ProcessoDocumento
         $oDaoProtprocessodocumento->p01_data = date('Y-m-d');
         $oDaoProtprocessodocumento->p01_usuario = $this->getUsuario()->getIdUsuario();
         $oDaoProtprocessodocumento->p01_procandamint = $this->getProcandamint();
-        $oDaoProtprocessodocumento->p01_estorage = $this->storage ? "true" : "false";
+        $oDaoProtprocessodocumento->p01_estorage = $this->isStorage();
         $oDaoProtprocessodocumento->p01_ordem = $this->getOrdem();
         $oDaoProtprocessodocumento->p01_assinado = $this->getAssinado();
         $oDaoProtprocessodocumento->p01_assinado_por = $this->getAssinadoPor();
@@ -680,7 +680,13 @@ class ProcessoDocumento
      */
     public function isStorage()
     {
-        return $this->storage == 't' || $this->storage == 'true' || $this->storage == true;
+        // PostgreSQL booleans may reach legacy PHP as the strings 't' or 'f'.
+        // A loose comparison of nonempty 'f' with true would misroute documents
+        // to E-Storage and skip removal of their Large Object reference.
+        if (is_string($this->storage)) {
+            return in_array(strtolower(trim($this->storage)), array('t', 'true', '1'), true);
+        }
+        return $this->storage === true || $this->storage === 1;
     }
 
     public static function getLastOrdemProcesso($processo)
