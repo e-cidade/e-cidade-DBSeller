@@ -244,7 +244,7 @@ class cl_protprocessodocumento
                 ," . ($this->p01_ordem === null || $this->p01_ordem === '' ? '0' : $this->p01_ordem) . "
                 ," . ($this->p01_assinado === null || $this->p01_assinado === '' ? 'false' : $this->p01_assinado) . "
                 ," . ($this->p01_assinado_por === null || $this->p01_assinado_por === '' ? 'NULL' : $this->p01_assinado_por) . "
-                ," . ($this->p01_documento_hash === null || $this->p01_documento_hash === '' ? 'NULL' : $this->p01_documento_hash) . "
+                ," . ($this->p01_documento_hash === null || $this->p01_documento_hash === '' ? 'NULL' : "'" . pg_escape_string($this->p01_documento_hash) . "'") . "
             )
         ";
         $result = db_query($sql);
@@ -340,7 +340,7 @@ class cl_protprocessodocumento
         }
 
         if (trim($this->p01_documento_hash) !== '' && $this->p01_documento_hash !== null) {
-            $sql .= "{$virgula} p01_documento_hash = '{$this->p01_documento_hash}' ";
+            $sql .= "{$virgula} p01_documento_hash = '" . pg_escape_string($this->p01_documento_hash) . "' ";
             $virgula = ',';
         }
 
