@@ -200,7 +200,7 @@ class ProcessoDocumento
         $this->storage = $oDocumento->p01_estorage;
 
         $this->ordem = $oDocumento->p01_ordem;
-        $this->setHash($oDocumento->p01_ordem);
+        $this->setHash($oDocumento->p01_documento_hash);
     }
 
     /**
@@ -493,6 +493,16 @@ class ProcessoDocumento
          * Valida arquivo, tamanho e extensao
          */
         $this->validarArquivo();
+
+        // The vendor database requires a document checksum on creation.
+        // Preserve explicitly supplied hashes; otherwise hash the staged bytes.
+        if ($this->getHash() === null || $this->getHash() === '') {
+            $sHash = @hash_file('sha256', $this->sCaminhoArquivo);
+            if ($sHash === false) {
+                throw new RuntimeException('Could not calculate the document checksum');
+            }
+            $this->setHash($sHash);
+        }
 
         return $this->incluir();
     }
